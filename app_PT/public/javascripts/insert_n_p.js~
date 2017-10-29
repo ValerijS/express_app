@@ -1,19 +1,22 @@
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
 module.exports =function (req, res, next) { 
     const pug = require('pug');
     var table = 'Groups';    
     const Groups = require(process.cwd()+'/'+'public/javascripts/bd').Posts;
-    console.log('c4', req.body.U_post.length);
-    if (req.body.U_name && req.body.U_post && req.body.U_post.length < 201) {   
+    console.log('c4', req);
+    if (req.query.U_name && req.query.U_post && req.query.U_post.length < 201) {   
         Groups.findOrCreate(
-             {where: {text: req.body.U_post,
-                     name: req.body.U_name
+             {where: {text: req.query.U_post,
+                     name: req.query.U_name
                      }
              }
          )          
          .then(()=>{
              Groups.findAll(
               {where: {
-                          name: req.body.U_name
+                          name: req.query.U_name
                       }
               })
               .then((result) => {
